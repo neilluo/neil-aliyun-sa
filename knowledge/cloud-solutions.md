@@ -11,6 +11,8 @@
 - 架构模板 → [../references/architecture-templates.md](../references/architecture-templates.md)(可复用架构模式)
 - 迁移方法 → [../references/migration-methodology.md](../references/migration-methodology.md)(IDC→云路径)
 
+**[[wikilink]] 实体索引**：本文件高频引用实体 → [[PolarDB]] [[ACK]] [[SLB]] [[百炼]] [[Tair]] [[MaxCompute]] [[Hologres]] [[Flink]] [[MSE]] [[WAF]] [[OSS]] [[CDN]] [[IoT Platform]] [[DataWorks]]
+
 ## 索引
 
 ### 按业务场景（已填充 ★ / 待补 ○）

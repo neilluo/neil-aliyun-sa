@@ -1,8 +1,8 @@
-# 自动化回归报告 — 2026-06-28 14:14 
+# 自动化回归报告 — 2026-07-16 16:37 
 
 > **测试器**：scripts/run-regression.py
 > **用例库**：tests/regression-cases.yaml (v1.2)
-> **覆盖文件**：13 个 markdown / 共 192420 字符
+> **覆盖文件**：13 个 markdown / 共 200725 字符
 > **PASS 阈值**：命中率 ≥ 85%
 
 ## 总览
@@ -326,10 +326,10 @@
 
 | 文件 | 字符数 |
 | --- | --- |
-| `knowledge/aliyun-products.md` | 49,848 |
+| `knowledge/aliyun-products.md` | 57,404 |
 | `knowledge/cloud-solutions.md` | 40,054 |
 | `knowledge/industry-landscape.md` | 14,480 |
-| `knowledge/ai-trends.md` | 10,115 |
+| `knowledge/ai-trends.md` | 10,864 |
 | `knowledge/competitor-cloud.md` | 18,893 |
 | `knowledge/company-profiles.md` | 9,920 |
 | `references/architecture-templates.md` | 9,458 |

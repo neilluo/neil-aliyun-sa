@@ -1,15 +1,15 @@
-# 自动化回归报告 — 2026-06-28 14:14 
+# 自动化回归报告 — 2026-08-05 23:08 
 
 > **测试器**：scripts/run-regression.py
-> **用例库**：tests/regression-cases.yaml (v1.2)
-> **覆盖文件**：13 个 markdown / 共 192420 字符
+> **用例库**：tests/regression-cases.yaml (v1.3)
+> **覆盖文件**：14 个 markdown / 共 230448 字符
 > **PASS 阈值**：命中率 ≥ 85%
 
 ## 总览
 
 - **整体命中率**：100.0%
-- **PASS 数**：26/26
-- **FAIL 数**：0/26
+- **PASS 数**：36/36
+- **FAIL 数**：0/36
 
 ## 用例结果矩阵
 
@@ -41,6 +41,16 @@
 | AI01 | B | 企业 AI Agent 平台方案（百炼+RAG+多Agent） | 6/6 | 100% | ✅ PASS |
 | AI02 | C | AIGC 内容生产选型（万相/HappyHorse/CosyVoice） | 5/5 | 100% | ✅ PASS |
 | AI03 | F | 百炼 vs PAI-EAS 成本交叉点 30秒判断 | 5/5 | 100% | ✅ PASS |
+| PP01 | C | PolarDB 家族购买路径核验完整性 | 6/6 | 100% | ✅ PASS |
+| PP02 | C | RDS 家族购买路径核验完整性 + Serverless 下线 | 6/6 | 100% | ✅ PASS |
+| PP03 | C | ADB / MaxCompute / Hologres 购买路径核验 | 7/7 | 100% | ✅ PASS |
+| PP04 | C | ClickHouse 双版本购买路径核验 | 6/6 | 100% | ✅ PASS |
+| PP05 | C | Lindorm 购买路径 + Serverless 无法新购 | 6/6 | 100% | ✅ PASS |
+| PP06 | C | EMR 家族购买路径核验 + HA Master 3 起步 | 6/6 | 100% | ✅ PASS |
+| PP07 | C | Flink 全托管无作业级 Serverless | 5/5 | 100% | ✅ PASS |
+| PP08 | C | DataWorks 资源组购买路径核验 | 5/5 | 100% | ✅ PASS |
+| PP09 | C | Tair / OSS / PAI / 百炼 购买路径核验 | 6/6 | 100% | ✅ PASS |
+| PP10 | C | 采购路径核验清单结构完整性（红色预警清单 + 匿名核验边界） | 9/9 | 100% | ✅ PASS |
 
 ## 详细命中明细
 
@@ -322,14 +332,126 @@
 | `GPU` | ✅ |
 | `私有部署` | ✅ |
 
+### PP01 — PolarDB 家族购买路径核验完整性  [PASS]
+
+| 关键词 | 命中 |
+| --- | --- |
+| `PolarDB MySQL 集群版` | ✅ |
+| `PolarDB MySQL Serverless` | ✅ |
+| `PolarDB-X` | ✅ |
+| `polardb-buy.aliyun.com` | ✅ |
+| `drds_polarxpre_public_cn` | ✅ |
+| `不支持转包月` | ✅ |
+
+### PP02 — RDS 家族购买路径核验完整性 + Serverless 下线  [PASS]
+
+| 关键词 | 命中 |
+| --- | --- |
+| `RDS MySQL 高可用版` | ✅ |
+| `RDS MySQL Serverless` | ✅ |
+| `RDS PostgreSQL Serverless` | ✅ |
+| `RDS SQL Server Serverless` | ✅ |
+| `已停售` | ✅ |
+| `无法转化为包年包月` | ✅ |
+
+### PP03 — ADB / MaxCompute / Hologres 购买路径核验  [PASS]
+
+| 关键词 | 命中 |
+| --- | --- |
+| `ADB MySQL 企业版` | ✅ |
+| `ADB PostgreSQL` | ✅ |
+| `GreenplumPre` | ✅ |
+| `MaxCompute` | ✅ |
+| `odpsplus` | ✅ |
+| `Hologres 计算组` | ✅ |
+| `网关` | ✅ |
+
+### PP04 — ClickHouse 双版本购买路径核验  [PASS]
+
+| 关键词 | 命中 |
+| --- | --- |
+| `ClickHouse 企业版` | ✅ |
+| `ClickHouse 社区兼容版` | ✅ |
+| `clickhouse_pre_public_cn` | ✅ |
+| `clickhouse_go_public_cn` | ✅ |
+| `无独立规格页` | ✅ |
+| `0.49987` | ✅ |
+
+### PP05 — Lindorm 购买路径 + Serverless 无法新购  [PASS]
+
+| 关键词 | 命中 |
+| --- | --- |
+| `Lindorm 宽表引擎` | ✅ |
+| `Lindorm 时序引擎` | ✅ |
+| `hitsdb_lindormnextpre_public_cn` | ✅ |
+| `无法新购` | ✅ |
+| `4C16G` | ✅ |
+| `≥ 3 节点` | ✅ |
+
+### PP06 — EMR 家族购买路径核验 + HA Master 3 起步  [PASS]
+
+| 关键词 | 命中 |
+| --- | --- |
+| `EMR on ECS` | ✅ |
+| `EMR Serverless Spark` | ✅ |
+| `EMR Serverless StarRocks` | ✅ |
+| `Master ≥ 3` | ✅ |
+| `存算一体` | ✅ |
+| `存算分离` | ✅ |
+
+### PP07 — Flink 全托管无作业级 Serverless  [PASS]
+
+| 关键词 | 命中 |
+| --- | --- |
+| `Flink 全托管` | ✅ |
+| `管控资源固定 2 CU` | ✅ |
+| `作业级 Serverless` | ✅ |
+| `释放整个工作空间` | ✅ |
+| `跨可用区` | ✅ |
+
+### PP08 — DataWorks 资源组购买路径核验  [PASS]
+
+| 关键词 | 命中 |
+| --- | --- |
+| `DataWorks Serverless 资源组` | ✅ |
+| `最低 2 CU` | ✅ |
+| `包月不能转按量` | ✅ |
+| `独享资源组` | ✅ |
+| `不推荐` | ✅ |
+
+### PP09 — Tair / OSS / PAI / 百炼 购买路径核验  [PASS]
+
+| 关键词 | 命中 |
+| --- | --- |
+| `kvstore_pretair_public_cn` | ✅ |
+| `Tair Serverless` | ✅ |
+| `learn_EasDedicatedPrepay_public_cn` | ✅ |
+| `PAI-DSW` | ✅ |
+| `百炼 Token Plan` | ✅ |
+| `存储包` | ✅ |
+
+### PP10 — 采购路径核验清单结构完整性（红色预警清单 + 匿名核验边界）  [PASS]
+
+| 关键词 | 命中 |
+| --- | --- |
+| `红色预警` | ✅ |
+| `采购走不通` | ✅ |
+| `已下线` | ✅ |
+| `无法新购` | ✅ |
+| `不支持转包月` | ✅ |
+| `匿名核验的边界` | ✅ |
+| `登录复验` | ✅ |
+| `C11 版本可售性时效` | ✅ |
+| `C12 Serverless 语义粒度` | ✅ |
+
 ## 文件覆盖
 
 | 文件 | 字符数 |
 | --- | --- |
-| `knowledge/aliyun-products.md` | 49,848 |
+| `knowledge/aliyun-products.md` | 68,956 |
 | `knowledge/cloud-solutions.md` | 40,054 |
 | `knowledge/industry-landscape.md` | 14,480 |
-| `knowledge/ai-trends.md` | 10,115 |
+| `knowledge/ai-trends.md` | 10,864 |
 | `knowledge/competitor-cloud.md` | 18,893 |
 | `knowledge/company-profiles.md` | 9,920 |
 | `references/architecture-templates.md` | 9,458 |
@@ -339,3 +461,4 @@
 | `references/caf-landing-zone.md` | 4,646 |
 | `references/cloud-product-mapping.md` | 3,098 |
 | `references/customer-playbook.md` | 1,931 |
+| `references/pricing-verification-checklist.md` | 18,171 |

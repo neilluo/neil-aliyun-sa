@@ -32,6 +32,7 @@
 - 限额按**主账号**维度（所有 RAM 子账号/工作空间/APIKey 共享）
 - 可临时提升配额（控制台申请，北京/新加坡即时生效，最长30天）
 - PTU（专属吞吐单元）：大客户预留容量，绕过共享限流
+- **突发/增速限流**（区别于上表稳态限额）：除稳态 RPM/TPM 限额外，另有用户维度**静态增速限流**（突发时 token 增速 ≤ max(前 5min token×30%, 增速配置值)）+ 客户维度重试随机指数退避（1-5 次最长 6/15/36/63/114s）——完整机制见 [aliyun-products.md](aliyun-products.md) 百炼卡「增速限流 / 突发限流机制」
 - Batch API：非实时异步批处理，50%折扣，更高吞吐允许
 - **SLA**：可用性 ≥ 99.9%（赔偿阶梯：99.0-99.9%→10%代金券；95-99%→25%；<95%→50%）
 - **无延迟 SLA**：无官方 TTFT/P99 延迟承诺
@@ -79,6 +80,7 @@
 - **千问 Qwen**：语言模型，开源生态（Qwen2.5 系列 72B/14B/7B/1.5B 全开源）；长文本（128K+）；多模态（VL/Audio）
 - **万相**：图像/视频生成（文生图/图生图/视频生成），对标 Midjourney/DALL-E
 - **Qoder CN 系列**（原灵码 Lingma，2026.5.20 更名）：从 AI 代码助手升级为 Agentic Coding Platform。产品线含 Qoder CN（IDE 插件/Quest 自主开发）、QoderWork CN（桌面办公助手）、CLI、Cloud Agents。对标 GitHub Copilot/Cursor/Windsurf。全球版 qoder.com / 中国版 qoder.com.cn
+- **Meoo（秒悟）**（2026.4 起持续迭代，主体：通义云启杭州）：**云端 AI Vibe Coding 全栈应用工厂**，一句话生成前端+后端+DB+部署上线的完整应用（网页/H5/微信小程序），内置 Supabase 化 BaaS + 多模型选择器（Qwen3.7-Max/Plus、Qwen3.6-Plus、Kimi2.5、GLM-5/5.1/5.2、MiniMax、DeepSeek-v3.2、Qwen3-VL、通义万相/Wan2.7）。产品形态：网页端 + Meoo CLI（让 Claude Code/Codex/Cursor/Qoder 等外部 Agent 接管云端资源）+ 微信小程序代提审。四种 Agent 模式（Agent/Swarms 蜂群/Plan/Design）+ 技能市场 + 团队版席位制积分共享（¥698/月起 5 席位）。对标海外 Vercel v0/Bolt.new/Lovable/Replit Agent，国内 Trae/秒哒。**与 Qoder 的分工：Qoder 面向开发者/IDE，Meoo 面向业务/无代码/端到端全栈**。仅中国大陆部署，服务器无海外节点。官网 meoo.com / 文档 docs.meoo.com
 - **听悟**：语音识别/会议纪要/音频理解
 - 与百炼的关系：通义模型 = 底层能力；百炼 = 调用/编排/管理平台；DashScope = API 网关通道
 
@@ -152,15 +154,118 @@
 - 知识库工程化：文档更新频率 / 索引刷新 / 评测指标（Recall@K, MRR）
 - 混合检索（关键词+向量+Re-ranking）为生产推荐模式 [实战-ATA]
 
-### 7. AIGC 内容生产 [推断]
-- 文生图 / 文生视频 / 数字人
-- 创意生产工业化（HappyHorse 等内部能力）
-- 行业落地（广告、娱乐、教育、零售）
+### 7. AIGC 内容生产 [官方+推断]
 
-### 8. 模型即服务 (MaaS) [官方+推断]
-- 收入 / 调用量 / GPU 台数趋势（参考 fbi-maas-daily-data-analysis 数据）
-- 模型 API 定价模式
-- 客户画像
+**通义万相（Wanx）**—— 来源：help.aliyun.com + 百炼控制台
+- 产品定位：图像/视频生成 API，对标 Midjourney/DALL-E/Sora
+- 能力矩阵：
+  - wan2.7-image-pro：文生图，高质量多风格
+  - qwen-image-2.0-pro：图像编辑/参考图生成
+  - happyhorse-1.1-t2v：文生视频（Text-to-Video）
+  - happyhorse-1.1-i2v：图生视频（首帧驱动）
+  - happyhorse-1.1-r2v：参考图生视频（最多 9 张参考图）
+  - happyhorse-1.0-video-edit：视频编辑
+- 调用方式：通过百炼 API 统一调用，按次/时长计费
+- 输出规格：图像最高 2048×2048；视频 720p/1080p，时长 5-30s
+- 行业落地：广告素材批量生产、电商产品图、教育课件视觉、娱乐短视频、零售营销素材
+- 竞品对标：Midjourney（图像）/ Runway Gen-3（视频）/ 可灵 Kling（快手）/ Pika
+
+**数字人与虚拟人** [推断]:
+- CosyVoice（语音克隆/合成）：cosyvoice-v3.5-plus，支持零样本声音克隆
+- 数字人技术栈：音频生成 + 图像/视频生成 + 口型同步
+- 落地场景：直播带货数字人、客服虚拟形象、知识视频主播
+- 成4成熟度：图像生成已规模化生产；视频生成早期落地；数字人尚在探索期
+
+**3D 模型生成** [官方-新]:
+- Tripo-H3.1 / Tripo-P1.0：文生 3D / 图生 3D，通过百炼 API 调用
+- 场景：游戏资产、电商 3D 展示、建筑可视化
+
+**音乐生成** [官方-新]:
+- fun-music-v1：根据提示词/歌词生成音乐
+- 场景：短视频 BGM、广告配乐、教育内容
+
+### 8. 模型即服务 (MaaS) 商业模式 [官方+推断]
+
+**百炼平台商业模式**：
+- 核心收入：Token 消费费（按量）+ PTU 专属吐量单元（大客户预留）+ 微调/训练费
+- 定价策略：“极致性价比”路线——Qwen-Plus 0.8元/百万 vs GPT-4o-mini ~$0.15/M（约 1元）
+- 客户分层：
+  - 开发者/初创：免费额度 + 按量付费
+  - 中型企业：资源包抵扣（打折）
+  - 大客户：PTU 专属容量 + 商务制定价
+  - 生态合作伙伴：ISV/SI 分成模式
+
+**市场竞争格局** [2026-06 推断]:
+- 国内 MaaS 竞争激烈：百炼 vs 火山引擎 Ark vs 智谱 BigModel vs 月之暗面 vs 小米
+- 竞争维度：模型能力 × 定价 × 生态工具链 × 开源影响力
+- 阿里云差异化：
+  - Qwen 开源生态（全球 #1 开源模型下载量）
+  - 百炼“一站式”（模型+编排+RAG+微调+部署）
+  - 三方模型聚合（DeepSeek/GLM/Kimi/MiniMax/小米 均已接入百炼）
+  - 与阿里云 IaaS 深度绑定（PAI GPU + VPC + SLS 监控）
+
+**关键趋势信号** [2026-06 推断]:
+- 价格战持续：各厂商密集降价，百炼多次调整定价（Flash 系列最新 1.2元/百万）
+- 多模态融合：从纯文本向全模态（omni）演进，语音+视觉+文本统一
+- Agent 平台化：从API 调用向 Agent 编排平台转型
+- 私有化部署需求增长：金融/政企数据不出域，PAI-EAS 私有部署量上升
+- 3D/音乐生成新赛道：Tripo 接入百炼，扩展 AIGC 边界
+
+### 9. Agent 知识工程（Knowledge Engineering for Agents）[ATA实战+官方]
+
+> 来源：飞樰《从 LLM Wiki / Obsidian-Wiki / GBrain 来看 Agent时代知识的“自组织”与“自进化”》(2026-04-27, 9423览) + 晴可《别让你的知识腐烂——Karpathy LLM Wiki 在 KBase 的实践》(2026-04-24, 3861览)
+
+**核心论断：RAG → LLM Wiki 的范式转移** [ATA实战]
+
+| 维度 | RAG（检索模式） | LLM Wiki（编译模式） |
+|------|------|------|
+| 知识装配时机 | 查询时临时拼凑 | 提前编译好，随时可用 |
+| 状态性 | 无状态，每次从零推导 | 有状态，知识持续累积 |
+| 文档处理 | 片段化切割，语义割裂 | 全文理解，重构知识网络 |
+| 增量更新 | 追加入库，无知识关联 | 增量编译，自动更新交叉引用 |
+| 类比 | “每次拆快递箱找东西的仓库” | “分类收纳好贴好标签的柜子” |
+
+**补充关系**：RAG 和 LLM Wiki 互补而非替代——海量文档高并发用 RAG，中等规模深度理解用 LLM Wiki，大规模+概念理解用“RAG底座+Wiki上层”。
+
+**Karpathy LLM Wiki 三层架构** [ATA实战]
+
+```
+Schema 层（AGENTS.md/SKILL.md）—— 告诉 Agent 如何维护 wiki
+Wiki 层（knowledge/ + index.md）—— Agent 编译产出的结构化知识
+Raw 层（raw/）—— 不可变原始资料，唯一事实来源
+```
+
+三个核心操作：
+- **Ingest**：新源进入 raw/，触发 Agent 读取→提取→整合到 wiki（一篇源可能触及 10-15 个 wiki 页面）
+- **Query**：先读 index 定位相关页面，综合回答（好答案可回写 wiki）
+- **Lint**：定期健康检查（矛盾/过时/孤立/缺页/交叉引用/数据空白）
+
+**渐进式披露（Progressive Disclosure）** [ATA实战]
+- Agent 先读 index.md 定位→按需加载 1-2 个相关页面→不够再扩大范围
+- 中等规模（~100 源/百页）无需 embedding-based RAG 基础设施，index.md 即可胜任
+- 大规模时可引入 qmd（BM25+向量混合搜索）或 MCP 工具
+
+**Skillify 概念** [ATA实战]
+- Skill 不再局限于固定格式的 SKILL.md，而是泛化为一种知识组织形态
+- 任何 Markdown 文件通过定义清晰的 Metadata/Schema，描述“什么场景下调用哪些文件”，即可实现知识的渐进式披露
+- GBrain (Garry Tan) 称之为 "Skillify"——“像 Skill 一样去组织和加载知识”
+
+**多对一编译（核心价值）** [ATA实战]
+- 最有价值的能力不是“1篇文档⥹1篇wiki”，而是**多篇原始文档编译为同一篇主题页**
+- 从“情景记忆”到“语义记忆”的映射——5篇关于认证的散落文档编译为1篇《认证模块总览》
+- KBase QCon 案例：72篇分享文档 → 14个主题 Wiki 页 + 知识图谱
+
+**KBase 平台工程实践** [ATA实战]
+- **远端 KBase Wiki 层**：Wiki文章和用户原始文档共存同一知识库，复用版本管理和权限控制
+- **本地 KBase Mind 客户端**：内置 Claude Code + 浏览器插件 + 多格式支持 + 与平台双向同步
+- **工具链**：a1 kbase CLI → 全流程编译/查询/健康检查
+- 对标 Obsidian 差异化：内置编译流程（raw→wiki→索引）+ Agent 集成 + KBase 双向同步
+
+**对方案设计的启示**：
+1. 客户的“知识管理”需求可用 Karpathy 架构设计，而不是只卖 RAG
+2. 中等规模知识库（<500文档）可不用向量数据库，index.md+全文读取即可
+3. “编译思维”可纳入方案设计——为客户建设“越用越厚”的知识体，而非“每次现查”的检索服务
+4. [[百炼]] RAG 功能可与 LLM Wiki 互补：百炼做海量文档级检索，Wiki 做概念级导航
 
 ---
 
@@ -170,6 +275,8 @@
 - [x] ATA：SA 动手系列 PD 分离部署 (11020600554) — 已蒸馏到上方第4节
 - [x] ATA：Java 程序员转型 AI (12020603721) — 已蒸馏到上方第5节
 - [x] ATA：网商银行智能化定位 (12020553615) — 已蒸馏到上方第5节
+- [x] ATA：从 LLM Wiki/Obsidian-Wiki/GBrain 看 Agent知识自进化 (11020627647) — 已蒸馏到上方第9节
+- [x] ATA：Karpathy LLM Wiki 在 KBase 的实践 (11020627230) — 已蒸馏到上方第9节
 - [ ] ATA：Aegis AI 数字分身 — 未找到原文，待确认标题
 - [ ] ATA：AIGC 证券投教视频 — 视频 AIGC
 - [ ] help.aliyun.com 百炼最新文档 — 部分已融入第5/6节

@@ -11,7 +11,7 @@
 
 | 页面 | 摘要 | 规模 |
 |------|------|------|
-| [knowledge/aliyun-products.md](knowledge/aliyun-products.md) | 66+ 产品能力卡（能力边界/选型场景/避坑/报价量级），含 13 行选型速查表 + 8 张决策树 | ~1700 行 |
+| [knowledge/aliyun-products.md](knowledge/aliyun-products.md) | 68+ 产品能力卡（含 Meoo 独立卡 for Vibe Coding + ClickHouse 企业版/社区兼容版双线卡），13 行选型速查表 + 9 张决策树 | ~2170 行 |
 
 ### 场景方案
 
@@ -29,7 +29,7 @@
 
 | 页面 | 摘要 | 规模 |
 |------|------|------|
-| [knowledge/ai-trends.md](knowledge/ai-trends.md) | 百炼/PAI/通义/Qwen3.7 演进线，PD 分离实测数据，Agent 三层次模型，AI Infra 高可用模式 | ~170 行 |
+| [knowledge/ai-trends.md](knowledge/ai-trends.md) | 百炼/PAI/通义/Qwen3.7 演进线，PD 分离实测数据，Agent 三层次模型，AI Infra 高可用模式，AIGC 内容生产矩阵，MaaS 商业模式分析，**Agent 知识工程**（LLM Wiki/Skillify/多对一编译/KBase实践），**Meoo Vibe Coding 分支** | ~282 行 |
 
 ### 客户画像
 
@@ -56,6 +56,7 @@
 | [references/architecture-templates.md](references/architecture-templates.md) | 高频架构模板（双活/出海/大数据/AIGC/Landing Zone/ADR） | ~310 行 |
 | [references/migration-methodology.md](references/migration-methodology.md) | IDC→云迁移 4 阶段 + 6R 决策矩阵 + 工具链 + 风险清单 | ~380 行 |
 | [references/bigdata-migration.md](references/bigdata-migration.md) | 大数据迁云专项（CDH→EMR/Hive→MC/Kafka/HDFS→OSS/Oracle→MC/Airflow→DataWorks） | ~510 行 |
+| [references/pricing-verification-checklist.md](references/pricing-verification-checklist.md) | **报价前采购路径核验清单 v2**：12 条硬门禁（含 C11 版本可售性时效 + C12 Serverless 语义粒度）+ 6 个实战反面案例（CK 企业版/Hologres 网关/ADB 3 节点步长/RDS SQL Server Serverless 下线/PolarDB Serverless 不支持转包月/Flink 工作空间才停计费）+ § 3.1 全域速查表 v2（30+ DB/大数据/AI/存储产品）+ § 3.2 红色预警清单（11 条已下线/无法新购/不可转包月 SKU）+ § 3.3 匿名核验边界（common-buy 全登录墙 + 4 类必须登录复验字段） | ~350 行 |
 
 ---
 
@@ -82,12 +83,72 @@
 
 | 目录 | 用途 | 当前状态 |
 |------|------|----------|
-| [raw/ata/](raw/ata/) | ATA 内部文章快照 | 待补充（9 篇已蒸馏但未存本地） |
-| [raw/aliyun-docs/](raw/aliyun-docs/) | help.aliyun.com 文档片段 | 待补充 |
+| [raw/ata/](raw/ata/) | ATA 内部文章快照 | 11 篇已归档（含 SHA256） |
+| [raw/aliyun-docs/](raw/aliyun-docs/) | help.aliyun.com / docs.meoo.com 文档片段 | 34 篇 Meoo 官方文档已归档（含 SHA256，2026-07-07） |
 | [raw/customer-cases/](raw/customer-cases/) | 客户案例原始资料 | 待补充 |
 | [raw/industry-reports/](raw/industry-reports/) | 行业报告、白皮书 | 待补充 |
 | [raw/competitor/](raw/competitor/) | 竞品云公开资料 | 待补充 |
-| [raw/misc/](raw/misc/) | 其他来源 | 待补充 |
+| [raw/misc/](raw/misc/) | 其他来源 | 1 篇已归档（百炼增速/突发限流机制，2026-07-16，含 SHA256） |
+
+---
+
+## 实体关系图（Mermaid）
+
+```mermaid
+graph LR
+    subgraph 产品层
+        ECS[ECS/ACK/ACS]
+        PolarDB[PolarDB]
+        Tair[Tair]
+        SLB[SLB/ALB/NLB]
+        MSE[MSE/Nacos]
+        MC[MaxCompute]
+        EMR[EMR/StarRocks]
+        DW[DataWorks]
+        BaiLian[百炼]
+        PAI[PAI]
+        WAF[WAF/安全]
+    end
+
+    subgraph 方案层
+        S1[电商大促]
+        S2[游戏出海]
+        S3[AI Agent]
+        S4[双活容灾]
+        S5[数据湖仓]
+        S9[SaaS多租户]
+    end
+
+    subgraph 方法论
+        LZ[Landing Zone]
+        WA[Well-Architected]
+        MIG[迁移方法论]
+    end
+
+    subgraph 客户/行业
+        BMW[宝马]
+        Cainiao[菜鸟]
+        Game[游戏行业]
+    end
+
+    ECS --> S1
+    ECS --> S2
+    PolarDB --> S4
+    PolarDB --> Cainiao
+    Tair --> S2
+    BaiLian --> S3
+    PAI --> S3
+    MC --> S5
+    EMR --> S5
+    DW --> S5
+    MSE --> S3
+    SLB --> S1
+    WAF --> S1
+    WAF --> WA
+    LZ --> BMW
+    MIG --> S5
+    S2 --> Game
+```
 
 ---
 
@@ -98,7 +159,7 @@
 | 实体 | 出现位置 |
 |------|----------|
 | PolarDB | aliyun-products / cloud-solutions(S4) / company-profiles(启迪/菜鸟) / competitor-cloud / bigdata-migration |
-| 百炼 | aliyun-products / cloud-solutions(S3) / ai-trends / competitor-cloud(火山引擎) |
+| 百炼 | aliyun-products(产品卡含增速/突发限流机制) / cloud-solutions(S3) / ai-trends / competitor-cloud(火山引擎) / raw/misc(限流机制内部文档) |
 | ACK/ACS | aliyun-products / cloud-solutions(S2游戏) / architecture-templates / competitor-cloud |
 | Landing Zone | caf-landing-zone / architecture-templates / company-profiles(宝马) |
 | MaxCompute | aliyun-products / bigdata-migration / cloud-solutions(S5) |
@@ -113,6 +174,13 @@
 | SLB(CLB/ALB/NLB) | aliyun-products(网络域) / cloud-solutions(全场景负载均衡) / architecture-templates |
 | MSE/Nacos | aliyun-products(中间件域，含四版本矩阵) / cloud-product-mapping(微服务化中型业务) / cloud-solutions(S3 AI Agent 注册发现) |
 
+| 灵骏/Lingjun | ai-trends(PAI GPU定价) / aliyun-products(PAI产品卡) |
+
+| Meoo/秒悟 | aliyun-products(AI域独立产品卡，Vibe Coding) / ai-trends(通义系列-Meoo) / raw/aliyun-docs/meoo(34 篇官方文档) |
+| Vibe Coding | aliyun-products(Meoo 产品卡 + AI选型决策树分支) / ai-trends(通义系列) |
+| ClickHouse | aliyun-products(独立双线卡：企业版 Serverless + 社区兼容版) / competitor-cloud(ByteHouse/CDW-CK 对位) / aliyun-products(EMR Serverless StarRocks 卡：选型分野) / references/pricing-verification-checklist(反面案例 1) |
+| 采购路径核验 / 购买页硬门禁 | SKILL.md(模式B 第 6 步 + 模式C 红线 2) / references/pricing-verification-checklist(10 条清单 + 3 案例 + 速查表) / aliyun-products(ADB/Hologres/ClickHouse 卡的四字段) |
+
 ---
 
-*最后更新：2026-06-26 — EMR Serverless StarRocks 深度蒸馏（独立产品卡 ~150 行，含规格/主键表/计费/选型决策树）+ 交叉引用表新增 StarRocks 实体*
+*最后更新：2026-08-05 — 🔧 采购路径闸门第二版（系统性核验完成）：subagent × 5 组并行核验 30+ DB/大数据/AI/存储产品；references/pricing-verification-checklist.md 扩到 ~350 行含 § 3.1 全域速查表 v2 + § 3.2 11 条红色预警清单 + § 3.3 匿名核验边界 + 案例 4/5/6（RDS SQL Server Serverless 下线 / PolarDB Serverless 不支持转包月 / Flink 无作业级 Serverless）+ 新增 C11/C12 核验项；tests/regression-cases.yaml v1.3 新增 PP01-PP10 采购路径专项 10 用例（主回归 36/36 全 PASS）；scripts/check-purchase-paths.py v1.0 哨兵首建（29 家族 + 6 结构 + 4 字段 = 100% PASS）；SKILL.md 模式G 补充哨兵/回归/Lint 三者互补关系；knowledge/aliyun-products.md 顶部指引改为"唯一权威来源指向 pricing-verification-checklist.md § 3.1"*

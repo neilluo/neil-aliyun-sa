@@ -83,7 +83,7 @@ Raw 层    (raw/)             — 不可变原始资料，只读不改
 
 | 路径 | 原因 |
 |------|------|
-| `raw/**` | 不可变源层，source of truth |
+| `raw/**` | 不可变源层，source of truth。实体归档策略：ATA 文章必须存全文；官方文档（help.aliyun.com）可仅存 URL+摘要+SHA256，因官网长期可访问；客户案例尽力存全文 |
 | `references/*.md` | 默认只读；仅在用户明确指令下可更新 |
 | `SKILL.md` | Schema 层，仅在架构升级时修改 |
 | `AGENTS.md` | 本文件，仅在协议升级时修改 |
