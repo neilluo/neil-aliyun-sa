@@ -19,6 +19,10 @@
 
 > 以下为种子语料 —— 等待逐篇蒸馏。每篇蒸馏前先移到 Processing，蒸馏后再移到 Done 并指明落地文件。
 
+### 2026-08-06 百炼 Token Plan 官方概述页刷新（增量核对）
+
+- [done] 2026-08-06 | 官方文档 | 百炼 Token Plan 概述（token-plan-overview 重抓核对，Credits 抵扣公式 + 与按量付费/节省计划链路关系 + 模型完整版声明 + 团队版订阅月计费周期为本次新增/细化项）| https://help.aliyun.com/zh/model-studio/token-plan-overview | 按 AGENTS.md 策略官方文档仅存 URL+摘要，无需全文归档（2026-08-05 已首蒸三页，本次为增量刷新）| knowledge/aliyun-products.md（百炼卡 Token Plan 章节增量补充：Credits 抵扣公式/按量付费·节省计划三方关系/完整版模型/订阅月周期）
+
 ### 2026-08-05 阿里云 ClickHouse 两条产品线报价踩坑洞察（实战投喂）
 
 - [done] 2026-08-05 | 实战踩坑 | 阿里云 ClickHouse 企业版 vs 社区兼容版报价与购买路径差异（海底捞项目实战） | (Neil 实战总结投喂 + help.aliyun.com/zh/clickhouse 计费/购买页交叉验证) | 无需 raw 全文归档（按 AGENTS.md 策略：实战洞察直接编入 wiki） | knowledge/aliyun-products.md（新增 ClickHouse 独立双线产品卡：企业版 Serverless + 社区兼容版）+ index.md（交叉引用表新增 ClickHouse 实体）
